@@ -13,7 +13,9 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind('path.public', function() {
-            return base_path().'/../cms.panyeppen.com';
+            // Gunakan path dari .env jika ada, jika tidak gunakan bawaan Laravel
+            $customPath = env('PUBLIC_PATH');
+            return $customPath ? base_path($customPath) : base_path('public');
         });
     }
 
