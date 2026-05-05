@@ -30,7 +30,8 @@ $app = Application::configure(basePath: dirname(__DIR__))
 
 // PAKSA JALUR PUBLIK DISINI
 if ($publicPath = env('PUBLIC_PATH')) {
-    $app->usePublicPath(realpath(base_path($publicPath)) ?: base_path($publicPath));
+    $path = str_starts_with($publicPath, DIRECTORY_SEPARATOR) ? $publicPath : base_path($publicPath);
+    $app->usePublicPath(realpath($path) ?: $path);
 }
 
 return $app;
