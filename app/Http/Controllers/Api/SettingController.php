@@ -74,7 +74,7 @@ class SettingController extends Controller
             $file = $request->file('logo');
             $fileName = 'logo_' . time() . '.' . $file->getClientOriginalExtension();
             $path = $file->storeAs('logos', $fileName, 'public');
-            $url = Storage::url($path);
+            $url = 'storage/' . $path; // HANYA SIMPAN PATH RELATIF
  
             return response()->json([
                 'message' => 'Logo berhasil diunggah.',

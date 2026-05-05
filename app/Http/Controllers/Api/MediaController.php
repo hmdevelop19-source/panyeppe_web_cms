@@ -40,7 +40,7 @@ class MediaController extends Controller
 
             $media = Media::create([
                 'file_name' => $file->getClientOriginalName(),
-                'file_path' => Storage::url($path),
+                'file_path' => 'storage/' . $path, // HANYA SIMPAN PATH RELATIF
                 'file_type' => $file->getClientMimeType(),
                 'file_size' => $file->getSize(),
             ]);
