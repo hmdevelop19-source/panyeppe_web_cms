@@ -6,6 +6,7 @@ Route::get('/test-config', function() {
     return [
         'app_url_env' => env('APP_URL'),
         'app_url_config' => config('app.url'),
+        'disk_public_url' => config('filesystems.disks.public.url'),
         'storage_url_test' => Storage::url('test.png'),
         'public_path_resolved' => public_path(),
     ];
