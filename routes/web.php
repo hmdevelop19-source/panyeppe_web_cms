@@ -2,8 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/test-config', function() {
+    return [
+        'app_url_config' => config('app.url'),
+        'app_url_env' => env('APP_URL'),
+        'public_path' => public_path(),
+    ];
 });
 
 Route::fallback(function () {
