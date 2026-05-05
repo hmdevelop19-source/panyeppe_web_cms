@@ -5,9 +5,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/test-config', function() {
     return [
         'app_url_env' => env('APP_URL'),
-        'public_path_env' => env('PUBLIC_PATH'),
+        'app_url_config' => config('app.url'),
+        'storage_url_test' => Storage::url('test.png'),
         'public_path_resolved' => public_path(),
-        'index_exists' => file_exists(public_path('index.html')),
     ];
 });
 
