@@ -27,3 +27,10 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();
+
+// PAKSA JALUR PUBLIK DISINI
+if ($publicPath = env('PUBLIC_PATH')) {
+    $app->usePublicPath(realpath(base_path($publicPath)) ?: base_path($publicPath));
+}
+
+return $app;
