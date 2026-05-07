@@ -3,17 +3,17 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Video;
 use App\Http\Requests\StoreVideoRequest;
 use App\Http\Requests\UpdateVideoRequest;
 use App\Http\Resources\VideoResource;
-use Illuminate\Http\Request;
+use App\Models\Video;
 
 class VideoController extends Controller
 {
     public function index()
     {
         $videos = Video::latest()->paginate(12);
+
         return VideoResource::collection($videos);
     }
 
@@ -22,8 +22,8 @@ class VideoController extends Controller
         $validated = $request->validated();
 
         // Auto-fix URL protocol if missing
-        if (!preg_match("~^(?:f|ht)tps?://~i", $validated['youtube_url'])) {
-            $validated['youtube_url'] = "https://" . $validated['youtube_url'];
+        if (! preg_match('~^(?:f|ht)tps?://~i', $validated['youtube_url'])) {
+            $validated['youtube_url'] = 'https://'.$validated['youtube_url'];
         }
 
         if ($validated['is_featured'] ?? false) {
@@ -31,7 +31,6 @@ class VideoController extends Controller
         }
 
         $video = Video::create($validated);
-
 
         return (new VideoResource($video))
             ->additional(['message' => 'Video berhasil ditambahkan.']);
@@ -47,8 +46,8 @@ class VideoController extends Controller
         $validated = $request->validated();
 
         // Auto-fix URL protocol if missing
-        if (!preg_match("~^(?:f|ht)tps?://~i", $validated['youtube_url'])) {
-            $validated['youtube_url'] = "https://" . $validated['youtube_url'];
+        if (! preg_match('~^(?:f|ht)tps?://~i', $validated['youtube_url'])) {
+            $validated['youtube_url'] = 'https://'.$validated['youtube_url'];
         }
 
         if ($validated['is_featured'] ?? false) {
@@ -56,7 +55,6 @@ class VideoController extends Controller
         }
 
         $video->update($validated);
-
 
         return (new VideoResource($video))
             ->additional(['message' => 'Video berhasil diperbarui.']);
@@ -66,9 +64,8 @@ class VideoController extends Controller
     {
         $video->delete();
 
-
         return response()->json([
-            'message' => 'Video berhasil dihapus.'
+            'message' => 'Video berhasil dihapus.',
         ]);
     }
 }

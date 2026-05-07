@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Http\Resources\PostResource;
+use App\Models\Post;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
 
 class PostController extends Controller
@@ -32,7 +31,7 @@ class PostController extends Controller
     {
         $validated = $request->validated();
         $validated['user_id'] = $request->user()->id;
-        
+
         // Penulis cannot publish directly
         if ($request->user()->role === 'penulis' && $validated['status'] === 'published') {
             $validated['status'] = 'pending';
@@ -70,7 +69,7 @@ class PostController extends Controller
             $validated['status'] = 'pending';
         }
 
-        if ($validated['status'] === 'published' && !$post->published_at) {
+        if ($validated['status'] === 'published' && ! $post->published_at) {
             $validated['published_at'] = now();
         }
 
@@ -91,7 +90,7 @@ class PostController extends Controller
         Cache::increment('cache_v_posts');
 
         return response()->json([
-            'message' => 'Berita berhasil dihapus.'
+            'message' => 'Berita berhasil dihapus.',
         ]);
     }
 }

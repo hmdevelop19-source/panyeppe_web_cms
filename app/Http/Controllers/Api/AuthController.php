@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -19,13 +20,13 @@ class AuthController extends Controller
         ]);
 
         // Verify reCAPTCHA
-        $response = \Illuminate\Support\Facades\Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
             'secret' => env('RECAPTCHA_SECRET_KEY'),
             'response' => $request->captcha_token,
             'remoteip' => $request->ip(),
         ]);
 
-        if (!$response->json('success')) {
+        if (! $response->json('success')) {
             throw ValidationException::withMessages([
                 'captcha_token' => ['Verifikasi reCAPTCHA gagal. Silakan coba lagi.'],
             ]);
@@ -41,7 +42,7 @@ class AuthController extends Controller
 
         if ($user->status !== 'active') {
             return response()->json([
-                'message' => 'Akun Anda sedang dinonaktifkan. Silakan hubungi administrator.'
+                'message' => 'Akun Anda sedang dinonaktifkan. Silakan hubungi administrator.',
             ], 403);
         }
 
@@ -55,7 +56,7 @@ class AuthController extends Controller
                 'name' => $user->name,
                 'email' => $user->email,
                 'role' => $user->role,
-            ]
+            ],
         ]);
     }
 
@@ -64,7 +65,7 @@ class AuthController extends Controller
         $request->user()->currentAccessToken()->delete();
 
         return response()->json([
-            'message' => 'Berhasil keluar sesi.'
+            'message' => 'Berhasil keluar sesi.',
         ]);
     }
 

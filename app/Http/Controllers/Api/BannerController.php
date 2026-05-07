@@ -11,6 +11,7 @@ class BannerController extends Controller
     public function index()
     {
         $banners = Banner::orderBy('order')->get();
+
         return response()->json($banners);
     }
 
@@ -27,10 +28,9 @@ class BannerController extends Controller
 
         $banner = Banner::create($validated);
 
-
         return response()->json([
             'message' => 'Banner hero berhasil ditambahkan.',
-            'data' => $banner
+            'data' => $banner,
         ], 201);
     }
 
@@ -52,10 +52,9 @@ class BannerController extends Controller
 
         $banner->update($validated);
 
-
         return response()->json([
             'message' => 'Banner hero berhasil diperbarui.',
-            'data' => $banner
+            'data' => $banner,
         ]);
     }
 
@@ -63,9 +62,8 @@ class BannerController extends Controller
     {
         $banner->delete();
 
-
         return response()->json([
-            'message' => 'Banner hero berhasil dihapus.'
+            'message' => 'Banner hero berhasil dihapus.',
         ]);
     }
 }

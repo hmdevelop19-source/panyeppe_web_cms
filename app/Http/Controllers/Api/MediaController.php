@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Media;
 use App\Http\Resources\MediaResource;
+use App\Models\Media;
+use App\Models\Page;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -15,7 +17,7 @@ class MediaController extends Controller
         $query = Media::latest();
 
         if ($request->filled('search')) {
-            $query->where('file_name', 'like', '%' . $request->search . '%');
+            $query->where('file_name', 'like', '%'.$request->search.'%');
         }
 
         if ($request->filled('category')) {
@@ -35,12 +37,12 @@ class MediaController extends Controller
 
         if ($request->hasFile('file')) {
             $file = $request->file('file');
-            $fileName = time() . '_' . $file->getClientOriginalName();
+            $fileName = time().'_'.$file->getClientOriginalName();
             $path = $file->storeAs('uploads', $fileName, 'public');
 
             $media = Media::create([
                 'file_name' => $file->getClientOriginalName(),
-                'file_path' => 'storage/' . $path, // HANYA SIMPAN PATH RELATIF
+                'file_path' => 'storage/'.$path, // HANYA SIMPAN PATH RELATIF
                 'file_type' => $file->getClientMimeType(),
                 'file_size' => $file->getSize(),
             ]);
@@ -54,7 +56,7 @@ class MediaController extends Controller
 
     public function update(Request $request, Media $medium)
     {
-        \Log::info('Updating Media ID: ' . $medium->id, $request->all());
+        \Log::info('Updating Media ID: '.$medium->id, $request->all());
 
         $validated = $request->validate([
             'show_in_gallery' => 'sometimes|boolean',
@@ -77,8 +79,12 @@ class MediaController extends Controller
         ]);
 
         $data = [];
-        if ($request->has('show_in_gallery')) $data['show_in_gallery'] = $request->show_in_gallery;
-        if ($request->has('category')) $data['category'] = $request->category;
+        if ($request->has('show_in_gallery')) {
+            $data['show_in_gallery'] = $request->show_in_gallery;
+        }
+        if ($request->has('category')) {
+            $data['category'] = $request->category;
+        }
 
         Media::whereIn('id', $request->ids)->update($data);
 
@@ -87,9 +93,9 @@ class MediaController extends Controller
 
     public function destroy(Media $medium)
     {
-        $isUsedInPost = \App\Models\Post::where('cover_image_id', $medium->id)->exists();
-        $isUsedInPage = \App\Models\Page::where('image_id', $medium->id)->exists();
-        
+        $isUsedInPost = Post::where('cover_image_id', $medium->id)->exists();
+        $isUsedInPage = Page::where('image_id', $medium->id)->exists();
+
         if ($isUsedInPost || $isUsedInPage) {
             return response()->json(['message' => 'Gagal: Media ini sedang digunakan oleh Artikel atau Halaman.'], 400);
         }
@@ -101,7 +107,7 @@ class MediaController extends Controller
         $medium->delete();
 
         return response()->json([
-            'message' => 'Media berhasil dihapus.'
+            'message' => 'Media berhasil dihapus.',
         ]);
     }
 }

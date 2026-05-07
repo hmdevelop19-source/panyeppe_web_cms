@@ -27,7 +27,7 @@ class LeaderController extends Controller
             'sort_order' => 'integer',
             'is_active' => 'sometimes',
             'photo' => 'nullable|image|max:5120',
-            'message' => 'nullable|string'
+            'message' => 'nullable|string',
         ]);
 
         if ($request->hasFile('photo')) {
@@ -35,6 +35,7 @@ class LeaderController extends Controller
         }
 
         $leader = Leader::create($validated);
+
         return response()->json($leader);
     }
 
@@ -46,7 +47,7 @@ class LeaderController extends Controller
             'sort_order' => 'integer',
             'is_active' => 'sometimes',
             'photo' => 'nullable|image|max:5120',
-            'message' => 'nullable|string'
+            'message' => 'nullable|string',
         ]);
 
         if ($request->hasFile('photo')) {
@@ -57,6 +58,7 @@ class LeaderController extends Controller
         }
 
         $leader->update($validated);
+
         return response()->json($leader);
     }
 
@@ -66,6 +68,7 @@ class LeaderController extends Controller
             Storage::disk('public')->delete($leader->photo);
         }
         $leader->delete();
+
         return response()->json(['message' => 'Deleted successfully']);
     }
 }

@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class SettingController extends Controller
 {
     public function index()
     {
         $settings = Setting::all()->pluck('value', 'key');
+
         return response()->json($settings);
     }
 
@@ -57,31 +57,30 @@ class SettingController extends Controller
             );
         }
 
-
         return response()->json([
             'message' => 'Konfigurasi website berhasil diperbarui.',
-            'settings' => $validated
+            'settings' => $validated,
         ]);
     }
- 
+
     public function uploadLogo(Request $request)
     {
         $request->validate([
             'logo' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
- 
+
         if ($request->hasFile('logo')) {
             $file = $request->file('logo');
-            $fileName = 'logo_' . time() . '.' . $file->getClientOriginalExtension();
+            $fileName = 'logo_'.time().'.'.$file->getClientOriginalExtension();
             $path = $file->storeAs('logos', $fileName, 'public');
-            $url = 'storage/' . $path; // HANYA SIMPAN PATH RELATIF
- 
+            $url = 'storage/'.$path; // HANYA SIMPAN PATH RELATIF
+
             return response()->json([
                 'message' => 'Logo berhasil diunggah.',
-                'path' => $url
+                'path' => $url,
             ]);
         }
- 
+
         return response()->json(['message' => 'Gagal mengunggah file.'], 400);
     }
 }

@@ -15,14 +15,14 @@ class CacheObserver
         Cache::forget('home_data');
         Cache::forget('site_menus');
         Cache::forget('site_settings');
-        
+
         // Increment versions for dynamic lists
         Cache::increment('cache_v_posts');
         Cache::increment('cache_v_agendas');
         Cache::increment('cache_v_announcements');
         Cache::increment('cache_v_leaders');
         Cache::increment('cache_v_testimonials');
-        
+
         // Log for debugging
         // \Log::info('Cache automatically cleared by Observer');
     }

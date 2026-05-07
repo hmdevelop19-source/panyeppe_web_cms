@@ -13,15 +13,15 @@ class Agenda extends Model
     protected static function booted()
     {
         static::creating(function ($agenda) {
-            if (!$agenda->slug) {
-                $agenda->slug = Str::slug($agenda->title) . '-' . Str::random(5);
+            if (! $agenda->slug) {
+                $agenda->slug = Str::slug($agenda->title).'-'.Str::random(5);
             }
         });
 
         static::updating(function ($agenda) {
             // Gunakan slug permanen untuk stabilitas SEO
-            if (!$agenda->slug) {
-                $agenda->slug = Str::slug($agenda->title) . '-' . Str::random(5);
+            if (! $agenda->slug) {
+                $agenda->slug = Str::slug($agenda->title).'-'.Str::random(5);
             }
         });
     }

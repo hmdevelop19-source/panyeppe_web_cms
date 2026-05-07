@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Page;
 use App\Http\Requests\StorePageRequest;
 use App\Http\Requests\UpdatePageRequest;
 use App\Http\Resources\PageResource;
+use App\Models\Page;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
 class PageController extends Controller
@@ -67,13 +66,14 @@ class PageController extends Controller
         $page->delete();
 
         return response()->json([
-            'message' => 'Halaman berhasil dihapus.'
+            'message' => 'Halaman berhasil dihapus.',
         ]);
     }
 
     public function getBySlug($slug)
     {
         $page = Page::where('slug', $slug)->with('imageRelation')->firstOrFail();
+
         return new PageResource($page);
     }
 }

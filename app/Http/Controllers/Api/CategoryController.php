@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
 use App\Http\Requests\CategoryRequest;
 use App\Http\Resources\CategoryResource;
-use Illuminate\Http\Request;
+use App\Models\Category;
 use Illuminate\Support\Str;
 
 class CategoryController extends Controller
@@ -55,7 +54,7 @@ class CategoryController extends Controller
         $category->delete();
 
         return response()->json([
-            'message' => 'Kategori berhasil dihapus.'
+            'message' => 'Kategori berhasil dihapus.',
         ]);
     }
 }

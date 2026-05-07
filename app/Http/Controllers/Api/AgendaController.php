@@ -3,20 +3,19 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Agenda;
 use App\Http\Requests\StoreAgendaRequest;
 use App\Http\Requests\UpdateAgendaRequest;
 use App\Http\Resources\AgendaResource;
+use App\Models\Agenda;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class AgendaController extends Controller
 {
     public function index(Request $request)
     {
         $agendas = Agenda::when($request->search, function ($query, $search) {
-                $query->where('title', 'like', "%{$search}%");
-            })
+            $query->where('title', 'like', "%{$search}%");
+        })
             ->latest()
             ->paginate($request->per_page ?? 10);
 
@@ -27,7 +26,6 @@ class AgendaController extends Controller
     {
         $validated = $request->validated();
         $agenda = Agenda::create($validated);
-
 
         return (new AgendaResource($agenda))
             ->additional(['message' => 'Agenda berhasil ditambahkan.']);
@@ -44,7 +42,6 @@ class AgendaController extends Controller
 
         $agenda->update($validated);
 
-
         return (new AgendaResource($agenda))
             ->additional(['message' => 'Agenda berhasil diperbarui.']);
     }
@@ -53,9 +50,8 @@ class AgendaController extends Controller
     {
         $agenda->delete();
 
-
         return response()->json([
-            'message' => 'Agenda berhasil dihapus.'
+            'message' => 'Agenda berhasil dihapus.',
         ]);
     }
 }

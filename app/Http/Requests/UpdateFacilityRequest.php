@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateFacilityRequest extends FormRequest
@@ -17,13 +18,13 @@ class UpdateFacilityRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
             'title' => 'sometimes|required|string|max:255',
-            'slug' => 'sometimes|nullable|string|max:255|unique:facilities,slug,' . $this->facility->id,
+            'slug' => 'sometimes|nullable|string|max:255|unique:facilities,slug,'.$this->facility->id,
             'description' => 'nullable|string',
             'image_id' => 'nullable|exists:media,id',
             'icon' => 'nullable|string|max:255',

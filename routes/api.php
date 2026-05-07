@@ -1,26 +1,25 @@
 <?php
 
-use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\DashboardController;
-use App\Http\Controllers\Api\PostController;
-use App\Http\Controllers\Api\PageController;
-use App\Http\Controllers\Api\MediaController;
 use App\Http\Controllers\Api\AgendaController;
 use App\Http\Controllers\Api\AnnouncementController;
-use App\Http\Controllers\Api\VideoController;
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BannerController;
-use App\Http\Controllers\Api\SettingController;
-use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\CategoryController;
-use App\Http\Controllers\Api\PublicController;
 use App\Http\Controllers\Api\ContactMessageController;
-use App\Http\Controllers\Api\MenuController;
-use App\Http\Controllers\Api\LeaderController;
-use App\Http\Controllers\Api\TestimonialController;
-use App\Http\Controllers\Api\SitemapController;
+use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\FacilityController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\LeaderController;
+use App\Http\Controllers\Api\MediaController;
+use App\Http\Controllers\Api\MenuController;
+use App\Http\Controllers\Api\PageController;
+use App\Http\Controllers\Api\PermissionController;
+use App\Http\Controllers\Api\PostController;
+use App\Http\Controllers\Api\PublicController;
+use App\Http\Controllers\Api\SettingController;
+use App\Http\Controllers\Api\SitemapController;
+use App\Http\Controllers\Api\TestimonialController;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\VideoController;
 use Illuminate\Support\Facades\Route;
 
 // Public routes
@@ -67,7 +66,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('videos', VideoController::class);
     Route::apiResource('banners', BannerController::class);
     Route::apiResource('categories', CategoryController::class);
-    
+
     // Settings & System (Admin only)
     Route::middleware('admin')->group(function () {
         Route::get('/settings', [SettingController::class, 'index']);
@@ -77,9 +76,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/permissions', [PermissionController::class, 'index']);
         Route::post('/permissions', [PermissionController::class, 'update']);
     });
-    
+
     Route::put('/profile', [UserController::class, 'updateProfile']);
-    
+
     // Menus
     Route::post('/menus/reorder', [MenuController::class, 'reorder']);
     Route::apiResource('menus', MenuController::class);

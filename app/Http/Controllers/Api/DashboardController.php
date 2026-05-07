@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Post;
-use App\Models\Category;
 use App\Models\Agenda;
 use App\Models\Announcement;
-use App\Models\Page;
-use App\Models\User;
+use App\Models\Category;
 use App\Models\ContactMessage;
-use Illuminate\Http\Request;
+use App\Models\Page;
+use App\Models\Post;
+use App\Models\User;
 
 class DashboardController extends Controller
 {
@@ -36,7 +35,7 @@ class DashboardController extends Controller
                 'server' => $_SERVER['SERVER_SOFTWARE'] ?? 'Unknown',
                 'database' => config('database.default'),
                 'os' => PHP_OS,
-            ]
+            ],
         ]);
     }
 
@@ -51,7 +50,7 @@ class DashboardController extends Controller
             'announcements' => Announcement::count(),
             'contact_messages' => ContactMessage::count(),
             'unread_messages' => ContactMessage::where('status', 'unread')->count(),
-            'trends' => $this->getTrends()
+            'trends' => $this->getTrends(),
         ]);
     }
 
@@ -69,6 +68,7 @@ class DashboardController extends Controller
                 'messages' => ContactMessage::where('created_at', 'like', "$yearMonth%")->count(),
             ];
         }
+
         return $trends;
     }
 }

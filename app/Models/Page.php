@@ -3,10 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
 use Illuminate\Support\Str;
 
 class Page extends Model
@@ -16,14 +14,14 @@ class Page extends Model
     protected static function booted()
     {
         static::creating(function ($page) {
-            if (!$page->slug) {
+            if (! $page->slug) {
                 $page->slug = Str::slug($page->title);
             }
         });
 
         static::updating(function ($page) {
             // Gunakan slug permanen untuk stabilitas SEO
-            if (!$page->slug) {
+            if (! $page->slug) {
                 $page->slug = Str::slug($page->title);
             }
         });

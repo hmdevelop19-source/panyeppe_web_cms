@@ -2,15 +2,15 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use App\Models\Category;
-use App\Models\Post;
-use App\Models\Page;
 use App\Models\Agenda;
 use App\Models\Announcement;
-use App\Models\Video;
 use App\Models\Banner;
+use App\Models\Category;
+use App\Models\Page;
+use App\Models\Post;
 use App\Models\Setting;
+use App\Models\User;
+use App\Models\Video;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
@@ -19,13 +19,13 @@ class SampleDataSeeder extends Seeder
     public function run(): void
     {
         $admin = User::where('role', 'admin')->first();
-        if (!$admin) {
+        if (! $admin) {
             $admin = User::create([
                 'name' => 'Administrator Pesantren',
                 'email' => 'admin@pesantren.ac.id',
                 'password' => bcrypt('password'),
                 'role' => 'admin',
-                'status' => 'active'
+                'status' => 'active',
             ]);
         }
 
@@ -44,7 +44,7 @@ class SampleDataSeeder extends Seeder
             'image_path' => 'https://images.unsplash.com/photo-1541339907198-e08756ebafe3?auto=format&fit=crop&q=80&w=2000',
             'link_url' => '/pendaftaran',
             'order' => 1,
-            'is_active' => true
+            'is_active' => true,
         ]);
         Banner::create([
             'title' => 'Kurikulum Integrasi IPTEK & IMTAQ',
@@ -52,7 +52,7 @@ class SampleDataSeeder extends Seeder
             'image_path' => 'https://images.unsplash.com/photo-1523050335392-9befbf0887c1?auto=format&fit=crop&q=80&w=2000',
             'link_url' => '/profil',
             'order' => 2,
-            'is_active' => true
+            'is_active' => true,
         ]);
         Banner::create([
             'title' => 'Pesantren Digital & Eco-Friendly',
@@ -60,7 +60,7 @@ class SampleDataSeeder extends Seeder
             'image_path' => 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&q=80&w=2000',
             'link_url' => '/fasilitas',
             'order' => 3,
-            'is_active' => true
+            'is_active' => true,
         ]);
 
         // 3. Posts (Berita & Artikel)
@@ -74,19 +74,19 @@ class SampleDataSeeder extends Seeder
                 'slug' => Str::slug($title),
                 'content' => "<p>Alhamdulillah, kegiatan belajar mengajar di Pesantren Modern pada minggu ke-$i berjalan lancar. Seluruh santri sangat antusias mengikuti program Tahfidz Quran pagi.</p><p>Diharapkan dengan adanya program intensif ini, target pencapaian hafalan santri di semester ini dapat tercapai sesuai kurikulum yang telah ditetapkan oleh Majelis Pengasuh.</p>",
                 'status' => 'published',
-                'published_at' => now()->subDays($i)
+                'published_at' => now()->subDays($i),
             ]);
         }
 
-        $artTitle = "Urgensi Adab Sebelum Ilmu dalam Menuntut Bekal Akhirat";
+        $artTitle = 'Urgensi Adab Sebelum Ilmu dalam Menuntut Bekal Akhirat';
         Post::create([
             'user_id' => $admin->id,
             'category_id' => $catArticle->id,
             'title' => $artTitle,
             'slug' => Str::slug($artTitle),
-            'content' => "<p>Dalam tradisi pesantren, adab diletakkan lebih tinggi daripada ilmu. Hal ini dikarenakan ilmu tanpa adab hanya akan melahirkan kesombongan...</p>",
+            'content' => '<p>Dalam tradisi pesantren, adab diletakkan lebih tinggi daripada ilmu. Hal ini dikarenakan ilmu tanpa adab hanya akan melahirkan kesombongan...</p>',
             'status' => 'published',
-            'published_at' => now()
+            'published_at' => now(),
         ]);
 
         // 4. Agendas
@@ -97,7 +97,7 @@ class SampleDataSeeder extends Seeder
             'content' => 'Seluruh santri wajib mempersiapkan diri untuk mengikuti evaluasi belajar tahap pertama.',
             'location' => 'Aula Utama & Gedung Serbaguna',
             'event_date' => now()->addDays(14),
-            'status' => 'published'
+            'status' => 'published',
         ]);
         Agenda::create([
             'title' => 'Wisuda Tahfidz & Haflah Akhirussanah',
@@ -105,7 +105,7 @@ class SampleDataSeeder extends Seeder
             'content' => 'Perayaan kelulusan santri angkatan ke-12 dan penghargaan bagi para penghafal Al-Quran.',
             'location' => 'Halaman Tengah Pesantren',
             'event_date' => now()->addDays(30),
-            'status' => 'published'
+            'status' => 'published',
         ]);
 
         // 5. Announcements
@@ -115,7 +115,7 @@ class SampleDataSeeder extends Seeder
             'slug' => Str::slug('Pengumuman Libur Hari Raya'),
             'content' => 'Diberitahukan kepada wali santri bahwa liburan semester akan dimulai pada tanggal 10 Juni.',
             'priority' => 'high',
-            'status' => 'published'
+            'status' => 'published',
         ]);
 
         // 6. Videos
@@ -124,7 +124,7 @@ class SampleDataSeeder extends Seeder
             'title' => 'Profil Singkat Pesantren Modern 2026',
             'description' => 'Tampilan lingkungan, fasilitas, dan kegiatan harian santri di kampus kami.',
             'youtube_url' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-            'is_featured' => true
+            'is_featured' => true,
         ]);
 
         // 7. Pages
@@ -133,19 +133,19 @@ class SampleDataSeeder extends Seeder
             'title' => 'Pusat Pendidikan & Penelitian Peradaban Umat',
             'slug' => 'sejarah',
             'content' => '<p>Didirikan sejak puluhan tahun yang lalu, eksistensi institusi ini berangkat dari keyakinan kuat bahwa pendidikan agama dan penerapan IPTEK modern tidak boleh terpisah. Kami didedikasikan untuk menjembatani kearifan ajaran klasik dalam merespon berbagai tantangan global yang berkembang secara dinamis.</p><p>Perjalanan panjang kami telah melahirkan ribuan alumni yang kini berkiprah di berbagai sektor, mulai dari akademisi, praktisi profesional, hingga pemimpin masyarakat, dengan tetap membawa nilai-nilai luhur yang ditanamkan selama masa studi.</p>',
-            'status' => 'published'
+            'status' => 'published',
         ]);
         Page::create([
             'title' => 'Visi Utama',
             'slug' => 'visi-misi',
             'content' => 'Terwujudnya insan kamil yang bertaqwa. Mengembangkan IPTEK berbasis Al-Quran. Mencetak pemimpin masa depan yang berakhlakul karimah.',
-            'status' => 'published'
+            'status' => 'published',
         ]);
         Page::create([
             'title' => 'Misi Strategis',
             'slug' => 'misi-strategis',
             'content' => '<ul><li>Mendorong pelaksanaan riset fundamental berbasis nilai Islami yang diakui secara global.</li><li>Menyelenggarakan tata kelola lembaga secara transparan, partisipatif dan dinamis.</li><li>Melaksanakan pengabdian kepada masyarakat secara holistik untuk pengentasan kemiskinan dan ketahanan keluarga.</li><li>Mengembangkan sinergitas internal dan jaringan berkelanjutan di tingkat lokal, nasional dan global.</li></ul>',
-            'status' => 'published'
+            'status' => 'published',
         ]);
 
         // 8. Settings

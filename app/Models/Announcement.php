@@ -13,15 +13,15 @@ class Announcement extends Model
     protected static function booted()
     {
         static::creating(function ($announcement) {
-            if (!$announcement->slug) {
-                $announcement->slug = Str::slug($announcement->title) . '-' . Str::random(5);
+            if (! $announcement->slug) {
+                $announcement->slug = Str::slug($announcement->title).'-'.Str::random(5);
             }
         });
 
         static::updating(function ($announcement) {
             // Gunakan slug permanen untuk stabilitas SEO
-            if (!$announcement->slug) {
-                $announcement->slug = Str::slug($announcement->title) . '-' . Str::random(5);
+            if (! $announcement->slug) {
+                $announcement->slug = Str::slug($announcement->title).'-'.Str::random(5);
             }
         });
     }

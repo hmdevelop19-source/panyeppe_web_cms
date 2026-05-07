@@ -11,7 +11,7 @@ class PermissionController extends Controller
     public function index()
     {
         $permissions = Permission::all();
-        
+
         // Structure data for frontend matrix if needed
         $matrix = [];
         foreach ($permissions as $perm) {
@@ -20,7 +20,7 @@ class PermissionController extends Controller
 
         return response()->json([
             'permissions' => $permissions,
-            'matrix' => $matrix
+            'matrix' => $matrix,
         ]);
     }
 
@@ -42,7 +42,7 @@ class PermissionController extends Controller
         );
 
         return response()->json([
-            'message' => 'Izin akses berhasil diperbarui.'
+            'message' => 'Izin akses berhasil diperbarui.',
         ]);
     }
 }

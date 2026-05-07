@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Menu;
+use Illuminate\Database\Seeder;
 
 class PublicMenuSeeder extends Seeder
 {
@@ -14,20 +14,20 @@ class PublicMenuSeeder extends Seeder
                 'label' => 'Berita',
                 'url' => '/berita',
                 'order' => 2,
-                'is_active' => true
+                'is_active' => true,
             ],
             [
                 'label' => 'Artikel',
                 'url' => '/artikel',
                 'order' => 3,
-                'is_active' => true
+                'is_active' => true,
             ],
             [
                 'label' => 'Kajian',
                 'url' => '/kajian',
                 'order' => 4,
-                'is_active' => true
-            ]
+                'is_active' => true,
+            ],
         ];
 
         foreach ($menus as $menu) {

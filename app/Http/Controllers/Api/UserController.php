@@ -3,21 +3,22 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
     public function index(Request $request)
     {
         $users = User::when($request->search, function ($query, $search) {
-                $query->where('name', 'like', "%{$search}%")
-                      ->orWhere('email', 'like', "%{$search}%");
-            })
+            $query->where('name', 'like', "%{$search}%")
+                ->orWhere('email', 'like', "%{$search}%");
+        })
             ->latest()
             ->paginate($request->per_page ?? 10);
 
@@ -28,7 +29,7 @@ class UserController extends Controller
     {
         $validated = $request->validated();
         $validated['password'] = Hash::make($validated['password']);
-        
+
         $user = User::create($validated);
 
         return (new UserResource($user))
@@ -65,13 +66,13 @@ class UserController extends Controller
         $user->delete();
 
         return response()->json([
-            'message' => 'Akun pengguna berhasil dihapus.'
+            'message' => 'Akun pengguna berhasil dihapus.',
         ]);
     }
 
     public function updateProfile(Request $request)
     {
-        /** @var \App\Models\User $user */
+        /** @var User $user */
         $user = auth()->user();
 
         $rules = [
@@ -84,7 +85,7 @@ class UserController extends Controller
             $rules['email'] = [
                 'required',
                 'email',
-                \Illuminate\Validation\Rule::unique('users', 'email')->ignore($user->id),
+                Rule::unique('users', 'email')->ignore($user->id),
             ];
         } else {
             $rules['email'] = 'required|email';
@@ -102,7 +103,7 @@ class UserController extends Controller
 
         return response()->json([
             'message' => 'Profil berhasil diperbarui.',
-            'user' => new UserResource($user)
+            'user' => new UserResource($user),
         ]);
     }
 }

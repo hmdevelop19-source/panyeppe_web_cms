@@ -17,7 +17,7 @@ class UpdatePageRequest extends FormRequest
             'title' => 'required|string|max:255',
             'content' => 'required',
             'status' => 'required|in:published,draft',
-            'slug' => 'nullable|string|unique:pages,slug,' . $this->route('page')->id,
+            'slug' => 'nullable|string|unique:pages,slug,'.$this->route('page')->id,
             'image' => 'nullable|image|max:2048',
             'image_id' => 'nullable|exists:media,id',
             'image_url' => 'nullable|string',

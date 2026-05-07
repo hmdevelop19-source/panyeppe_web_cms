@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\ContactMessage;
 use App\Http\Resources\ContactMessageResource;
-use Illuminate\Http\Request;
+use App\Models\ContactMessage;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class ContactMessageController extends Controller
 {
@@ -16,8 +16,8 @@ class ContactMessageController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name'    => 'required|string|max:255',
-            'email'   => 'required|email|max:255',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
             'subject' => 'nullable|string|max:255',
             'message' => 'required|string|min:10|max:5000',
         ]);
@@ -51,7 +51,7 @@ class ContactMessageController extends Controller
     {
         if ($contactMessage->status === 'unread') {
             $contactMessage->update([
-                'status'  => 'read',
+                'status' => 'read',
                 'read_at' => now(),
             ]);
         }
@@ -90,6 +90,7 @@ class ContactMessageController extends Controller
     public function unreadCount(): JsonResponse
     {
         $count = ContactMessage::where('status', 'unread')->count();
+
         return response()->json(['count' => $count]);
     }
 }

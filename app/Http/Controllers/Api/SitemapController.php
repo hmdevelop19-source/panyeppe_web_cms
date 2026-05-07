@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Post;
-use App\Models\Page;
 use App\Models\Agenda;
 use App\Models\Announcement;
+use App\Models\Page;
+use App\Models\Post;
 use Illuminate\Http\Response;
 
 class SitemapController extends Controller
@@ -23,7 +23,7 @@ class SitemapController extends Controller
             'pages' => $pages,
             'agendas' => $agendas,
             'announcements' => $announcements,
-            'baseUrl' => config('app.url_frontend', 'https://portalpesantren.ac.id')
+            'baseUrl' => config('app.url_frontend', 'https://portalpesantren.ac.id'),
         ])->render();
 
         return response($xml, 200)->header('Content-Type', 'text/xml');

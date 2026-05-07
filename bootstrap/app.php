@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\SecurityHeaders;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -13,15 +15,15 @@ $app = Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'admin' => \App\Http\Middleware\AdminMiddleware::class,
+            'admin' => AdminMiddleware::class,
         ]);
 
-        $middleware->append(\App\Http\Middleware\SecurityHeaders::class);
-        
+        $middleware->append(SecurityHeaders::class);
+
         $middleware->validateCsrfTokens(except: [
             'api/*',
         ]);
-        
+
         $middleware->statefulApi();
     })
     ->withExceptions(function (Exceptions $exceptions) {

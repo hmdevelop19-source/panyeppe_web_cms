@@ -1,8 +1,12 @@
 <?php
+
+use Illuminate\Contracts\Http\Kernel;
+use Illuminate\Http\Request;
+
 require __DIR__.'/vendor/autoload.php';
 $app = require_once __DIR__.'/bootstrap/app.php';
-$kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
-$kernel->handle(Illuminate\Http\Request::capture());
+$kernel = $app->make(Kernel::class);
+$kernel->handle(Request::capture());
 
 echo "CATEGORIES:\n";
 print_r(DB::table('categories')->get(['id', 'name'])->toArray());

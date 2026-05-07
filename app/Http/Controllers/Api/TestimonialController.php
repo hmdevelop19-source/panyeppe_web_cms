@@ -27,7 +27,7 @@ class TestimonialController extends Controller
 
         return response()->json([
             'message' => 'Testimoni berhasil ditambahkan.',
-            'data' => $testimonial
+            'data' => $testimonial,
         ], 201);
     }
 
@@ -50,13 +50,14 @@ class TestimonialController extends Controller
 
         return response()->json([
             'message' => 'Testimoni berhasil diperbarui.',
-            'data' => $testimonial
+            'data' => $testimonial,
         ]);
     }
 
     public function destroy(Testimonial $testimonial)
     {
         $testimonial->delete();
+
         return response()->json(['message' => 'Testimoni berhasil dihapus.']);
     }
 }
