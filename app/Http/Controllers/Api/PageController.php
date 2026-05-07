@@ -18,6 +18,9 @@ class PageController extends Controller
             ->when($request->search, function ($query, $search) {
                 $query->where('title', 'like', "%{$search}%");
             })
+            ->when($request->trashed === 'true', function ($query) {
+                $query->onlyTrashed();
+            })
             ->latest()
             ->paginate($request->per_page ?? 10);
 
@@ -75,5 +78,31 @@ class PageController extends Controller
         $page = Page::where('slug', $slug)->with('imageRelation')->firstOrFail();
 
         return new PageResource($page);
+    }
+
+    public function restore($id)
+    {
+        $page = Page::onlyTrashed()->findOrFail($id);
+        $page->restore();
+
+        return response()->json([
+            'message' => 'Halaman berhasil direstore.',
+        ]);
+    }
+
+    public function forceDelete($id)
+    {
+        $page = Page::onlyTrashed()->findOrFail($id);
+        
+        // Hapus file gambar jika ada
+        if ($page->image) {
+            Storage::disk('public')->delete($page->image);
+        }
+
+        $page->forceDelete();
+
+        return response()->json([
+            'message' => 'Halaman berhasil dihapus permanen.',
+        ]);
     }
 }

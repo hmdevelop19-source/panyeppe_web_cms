@@ -21,6 +21,9 @@ class PostController extends Controller
             ->when($request->status, function ($query, $status) {
                 $query->where('status', $status);
             })
+            ->when($request->trashed === 'true', function ($query) {
+                $query->onlyTrashed();
+            })
             ->latest()
             ->paginate($request->per_page ?? 10);
 
@@ -45,6 +48,7 @@ class PostController extends Controller
 
         // Clear cache
         Cache::increment('cache_v_posts');
+        Cache::forget('home_data');
 
         return (new PostResource($post->load(['category', 'user', 'coverImage'])))
             ->additional(['message' => $post->status === 'pending' ? 'Berita berhasil diajukan untuk review.' : 'Berita berhasil diterbitkan.']);
@@ -77,6 +81,7 @@ class PostController extends Controller
 
         // Clear cache
         Cache::increment('cache_v_posts');
+        Cache::forget('home_data');
 
         return (new PostResource($post->load(['category', 'user', 'coverImage'])))
             ->additional(['message' => $post->status === 'pending' ? 'Berita berhasil diajukan untuk review.' : 'Berita berhasil diperbarui.']);
@@ -88,9 +93,36 @@ class PostController extends Controller
 
         // Clear cache
         Cache::increment('cache_v_posts');
+        Cache::forget('home_data');
 
         return response()->json([
             'message' => 'Berita berhasil dihapus.',
+        ]);
+    }
+
+    public function restore($id)
+    {
+        $post = Post::onlyTrashed()->findOrFail($id);
+        $post->restore();
+
+        Cache::increment('cache_v_posts');
+        Cache::forget('home_data');
+
+        return response()->json([
+            'message' => 'Berita berhasil direstore.',
+        ]);
+    }
+
+    public function forceDelete($id)
+    {
+        $post = Post::onlyTrashed()->findOrFail($id);
+        $post->forceDelete();
+
+        Cache::increment('cache_v_posts');
+        Cache::forget('home_data');
+
+        return response()->json([
+            'message' => 'Berita berhasil dihapus permanen.',
         ]);
     }
 }

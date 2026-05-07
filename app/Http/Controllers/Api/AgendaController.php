@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateAgendaRequest;
 use App\Http\Resources\AgendaResource;
 use App\Models\Agenda;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class AgendaController extends Controller
 {
@@ -16,6 +17,9 @@ class AgendaController extends Controller
         $agendas = Agenda::when($request->search, function ($query, $search) {
             $query->where('title', 'like', "%{$search}%");
         })
+            ->when($request->trashed === 'true', function ($query) {
+                $query->onlyTrashed();
+            })
             ->latest()
             ->paginate($request->per_page ?? 10);
 
@@ -26,6 +30,9 @@ class AgendaController extends Controller
     {
         $validated = $request->validated();
         $agenda = Agenda::create($validated);
+
+        Cache::increment('cache_v_agendas');
+        Cache::forget('home_data');
 
         return (new AgendaResource($agenda))
             ->additional(['message' => 'Agenda berhasil ditambahkan.']);
@@ -42,6 +49,9 @@ class AgendaController extends Controller
 
         $agenda->update($validated);
 
+        Cache::increment('cache_v_agendas');
+        Cache::forget('home_data');
+
         return (new AgendaResource($agenda))
             ->additional(['message' => 'Agenda berhasil diperbarui.']);
     }
@@ -50,8 +60,37 @@ class AgendaController extends Controller
     {
         $agenda->delete();
 
+        Cache::increment('cache_v_agendas');
+        Cache::forget('home_data');
+
         return response()->json([
             'message' => 'Agenda berhasil dihapus.',
+        ]);
+    }
+
+    public function restore($id)
+    {
+        $agenda = Agenda::onlyTrashed()->findOrFail($id);
+        $agenda->restore();
+
+        Cache::increment('cache_v_agendas');
+        Cache::forget('home_data');
+
+        return response()->json([
+            'message' => 'Agenda berhasil direstore.',
+        ]);
+    }
+
+    public function forceDelete($id)
+    {
+        $agenda = Agenda::onlyTrashed()->findOrFail($id);
+        $agenda->forceDelete();
+
+        Cache::increment('cache_v_agendas');
+        Cache::forget('home_data');
+
+        return response()->json([
+            'message' => 'Agenda berhasil dihapus permanen.',
         ]);
     }
 }

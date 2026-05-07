@@ -56,12 +56,25 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
 
     // Resource CRUDs
+    // Restore & Force Delete Routes (Trash Feature)
+    Route::post('/posts/{id}/restore', [PostController::class, 'restore']);
+    Route::delete('/posts/{id}/force', [PostController::class, 'forceDelete']);
     Route::apiResource('posts', PostController::class);
+    
+    Route::post('/pages/{id}/restore', [PageController::class, 'restore']);
+    Route::delete('/pages/{id}/force', [PageController::class, 'forceDelete']);
     Route::get('/pages/slug/{slug}', [PageController::class, 'getBySlug']);
     Route::apiResource('pages', PageController::class);
+    
     Route::post('/media/bulk-update', [MediaController::class, 'bulkUpdate']);
     Route::apiResource('media', MediaController::class);
+    
+    Route::post('/agendas/{id}/restore', [AgendaController::class, 'restore']);
+    Route::delete('/agendas/{id}/force', [AgendaController::class, 'forceDelete']);
     Route::apiResource('agendas', AgendaController::class);
+    
+    Route::post('/announcements/{id}/restore', [AnnouncementController::class, 'restore']);
+    Route::delete('/announcements/{id}/force', [AnnouncementController::class, 'forceDelete']);
     Route::apiResource('announcements', AnnouncementController::class);
     Route::apiResource('videos', VideoController::class);
     Route::apiResource('banners', BannerController::class);
