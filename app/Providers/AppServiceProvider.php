@@ -12,6 +12,7 @@ use App\Models\Post;
 use App\Models\Setting;
 use App\Models\Testimonial;
 use App\Models\Video;
+use App\Models\Facility;
 use App\Observers\CacheObserver;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Schema;
@@ -48,5 +49,6 @@ class AppServiceProvider extends ServiceProvider
         Category::observe(CacheObserver::class);
         Leader::observe(CacheObserver::class);
         Testimonial::observe(CacheObserver::class);
+        Facility::observe(CacheObserver::class);
     }
 }

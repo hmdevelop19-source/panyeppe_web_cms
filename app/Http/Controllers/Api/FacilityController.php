@@ -33,8 +33,6 @@ class FacilityController extends Controller
     {
         $facility = Facility::create($request->validated());
 
-        Cache::forget('site_home_data'); // Clear home cache if facilities are shown there
-
         return new FacilityResource($facility);
     }
 
@@ -53,8 +51,6 @@ class FacilityController extends Controller
     {
         $facility->update($request->validated());
 
-        Cache::forget('site_home_data');
-
         return new FacilityResource($facility);
     }
 
@@ -64,8 +60,6 @@ class FacilityController extends Controller
     public function destroy(Facility $facility)
     {
         $facility->delete();
-
-        Cache::forget('site_home_data');
 
         return response()->noContent();
     }

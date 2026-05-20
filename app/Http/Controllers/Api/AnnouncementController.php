@@ -31,9 +31,6 @@ class AnnouncementController extends Controller
         $validated = $request->validated();
         $announcement = Announcement::create($validated);
 
-        Cache::increment('cache_v_announcements');
-        Cache::forget('home_data');
-
         return (new AnnouncementResource($announcement))
             ->additional(['message' => 'Pengumuman berhasil diterbitkan.']);
     }
@@ -49,9 +46,6 @@ class AnnouncementController extends Controller
 
         $announcement->update($validated);
 
-        Cache::increment('cache_v_announcements');
-        Cache::forget('home_data');
-
         return (new AnnouncementResource($announcement))
             ->additional(['message' => 'Pengumuman berhasil diperbarui.']);
     }
@@ -59,9 +53,6 @@ class AnnouncementController extends Controller
     public function destroy(Announcement $announcement)
     {
         $announcement->delete();
-
-        Cache::increment('cache_v_announcements');
-        Cache::forget('home_data');
 
         return response()->json([
             'message' => 'Pengumuman berhasil dihapus.',
@@ -73,9 +64,6 @@ class AnnouncementController extends Controller
         $announcement = Announcement::onlyTrashed()->findOrFail($id);
         $announcement->restore();
 
-        Cache::increment('cache_v_announcements');
-        Cache::forget('home_data');
-
         return response()->json([
             'message' => 'Pengumuman berhasil direstore.',
         ]);
@@ -85,9 +73,6 @@ class AnnouncementController extends Controller
     {
         $announcement = Announcement::onlyTrashed()->findOrFail($id);
         $announcement->forceDelete();
-
-        Cache::increment('cache_v_announcements');
-        Cache::forget('home_data');
 
         return response()->json([
             'message' => 'Pengumuman berhasil dihapus permanen.',

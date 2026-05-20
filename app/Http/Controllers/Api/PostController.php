@@ -36,7 +36,7 @@ class PostController extends Controller
         $validated['user_id'] = $request->user()->id;
 
         // Penulis cannot publish directly
-        if ($request->user()->role === 'penulis' && $validated['status'] === 'published') {
+        if ($request->user()->cannot('publish', Post::class) && $validated['status'] === 'published') {
             $validated['status'] = 'pending';
         }
 
@@ -45,10 +45,6 @@ class PostController extends Controller
         }
 
         $post = Post::create($validated);
-
-        // Clear cache
-        Cache::increment('cache_v_posts');
-        Cache::forget('home_data');
 
         return (new PostResource($post->load(['category', 'user', 'coverImage'])))
             ->additional(['message' => $post->status === 'pending' ? 'Berita berhasil diajukan untuk review.' : 'Berita berhasil diterbitkan.']);
@@ -63,13 +59,10 @@ class PostController extends Controller
     {
         $validated = $request->validated();
 
-        // Authorization: Authors can only edit their own posts
-        if ($request->user()->role === 'penulis' && $post->user_id !== $request->user()->id) {
-            return response()->json(['message' => 'Anda hanya dapat mengubah berita milik sendiri.'], 403);
-        }
+        $this->authorize('update', $post);
 
         // Penulis cannot publish directly
-        if ($request->user()->role === 'penulis' && $validated['status'] === 'published') {
+        if ($request->user()->cannot('publish', Post::class) && $validated['status'] === 'published') {
             $validated['status'] = 'pending';
         }
 
@@ -79,10 +72,6 @@ class PostController extends Controller
 
         $post->update($validated);
 
-        // Clear cache
-        Cache::increment('cache_v_posts');
-        Cache::forget('home_data');
-
         return (new PostResource($post->load(['category', 'user', 'coverImage'])))
             ->additional(['message' => $post->status === 'pending' ? 'Berita berhasil diajukan untuk review.' : 'Berita berhasil diperbarui.']);
     }
@@ -90,10 +79,6 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         $post->delete();
-
-        // Clear cache
-        Cache::increment('cache_v_posts');
-        Cache::forget('home_data');
 
         return response()->json([
             'message' => 'Berita berhasil dihapus.',
@@ -105,9 +90,6 @@ class PostController extends Controller
         $post = Post::onlyTrashed()->findOrFail($id);
         $post->restore();
 
-        Cache::increment('cache_v_posts');
-        Cache::forget('home_data');
-
         return response()->json([
             'message' => 'Berita berhasil direstore.',
         ]);
@@ -117,9 +99,6 @@ class PostController extends Controller
     {
         $post = Post::onlyTrashed()->findOrFail($id);
         $post->forceDelete();
-
-        Cache::increment('cache_v_posts');
-        Cache::forget('home_data');
 
         return response()->json([
             'message' => 'Berita berhasil dihapus permanen.',

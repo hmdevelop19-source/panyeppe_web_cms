@@ -31,9 +31,6 @@ class AgendaController extends Controller
         $validated = $request->validated();
         $agenda = Agenda::create($validated);
 
-        Cache::increment('cache_v_agendas');
-        Cache::forget('home_data');
-
         return (new AgendaResource($agenda))
             ->additional(['message' => 'Agenda berhasil ditambahkan.']);
     }
@@ -49,9 +46,6 @@ class AgendaController extends Controller
 
         $agenda->update($validated);
 
-        Cache::increment('cache_v_agendas');
-        Cache::forget('home_data');
-
         return (new AgendaResource($agenda))
             ->additional(['message' => 'Agenda berhasil diperbarui.']);
     }
@@ -59,9 +53,6 @@ class AgendaController extends Controller
     public function destroy(Agenda $agenda)
     {
         $agenda->delete();
-
-        Cache::increment('cache_v_agendas');
-        Cache::forget('home_data');
 
         return response()->json([
             'message' => 'Agenda berhasil dihapus.',
@@ -73,9 +64,6 @@ class AgendaController extends Controller
         $agenda = Agenda::onlyTrashed()->findOrFail($id);
         $agenda->restore();
 
-        Cache::increment('cache_v_agendas');
-        Cache::forget('home_data');
-
         return response()->json([
             'message' => 'Agenda berhasil direstore.',
         ]);
@@ -85,9 +73,6 @@ class AgendaController extends Controller
     {
         $agenda = Agenda::onlyTrashed()->findOrFail($id);
         $agenda->forceDelete();
-
-        Cache::increment('cache_v_agendas');
-        Cache::forget('home_data');
 
         return response()->json([
             'message' => 'Agenda berhasil dihapus permanen.',

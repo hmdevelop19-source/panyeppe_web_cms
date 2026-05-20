@@ -15,6 +15,7 @@ class CacheObserver
         Cache::forget('home_data');
         Cache::forget('site_menus');
         Cache::forget('site_settings');
+        Cache::forget('site_home_data');
 
         // Increment versions for dynamic lists
         Cache::increment('cache_v_posts');
